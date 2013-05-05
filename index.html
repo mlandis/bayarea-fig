@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<<<<<<< HEAD
 
   <head>
     <meta charset='utf-8' />
@@ -71,4 +72,60 @@ $ git checkout gh-pages
     
 
   </body>
+=======
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<head>
+<title>bayfig</title>    
+
+	<link rel="stylesheet" type="text/css" href="css/polymaps.css"/>
+	<link rel="stylesheet" type="text/css" href="css/bayfig.css"/>	
+	<link rel="stylesheet" type="text/css" href="css/jquery/jquery.ui.all.css">	
+
+	<script type="text/javascript" src="js/d3.v2.js"></script>
+	<script type="text/javascript" src="js/polymaps.min.js"></script>
+	
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="js/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="js/jquery.ui.mouse.js"></script>
+	<script type="text/javascript" src="js/jquery.ui.slider.js"></script>
+	<script type="text/javascript" src="js/jquery.ui.button.js"></script>
+
+</head>
+<!-- HTML LAYOUT -->
+<body>
+  <div id="container">
+
+  <div id="divCtrlTop">
+    <input type="button" id="buttonHelp" value="Help" onClick="window.open('http://github.com/mlandis/phylowood/wiki', '_blank')">
+    <input type="button" id="buttonReset" value="Reset">
+  </div>
+
+  <div id="divCtrlBottom">
+	<input type="button" id="buttonApply" value="Load" onClick="Bayfig.initialize();" />
+	<select id="selectDemoData" onChange="Bayfig.loadInput();">
+		<option value="nothing" selected="selected">select demo</option>
+		<option value="examples/vireya.nhx">rhododendron1</option>
+	</select>
+    <input type="checkbox" id="checkboxAutoload" name="autoLoad" checked><label id="checkboxLabel">Auto-Load</label></input>
+  </div>
+
+
+   <div id="divPhylo">
+	
+	<textarea class="text-area-input" id="textareaInput">Input New Hampshire eXtended (.nhx) file here.</textarea>
+  </div>
+  
+  <div id="divDraw">
+  </div>
+
+  <div id="divText">
+  </div>
+    
+</div>
+
+</body>
+
+<script type="text/javascript" src="js/bayfig.js"></script>
+>>>>>>> 110fc3e1473573483d4cc271113c27d03e8e6f11
 </html>
