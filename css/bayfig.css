@@ -12,8 +12,8 @@ svg {
 }
 
 text {
-    font-family: Helvetica; Arial; sans-serif
-    font-size: 16;
+    font-family: Helvetica;
+    font-size: 16px;
 }
 
 #container {
@@ -46,10 +46,10 @@ text {
 	position: absolute;
 	top:60px;
 	left:10px;
-    padding: 10px;
+    padding: 0px;
 	background-color:#FFFFFF;
-	height:600px;
-	width:400px;
+	height:800px;
+	width:600px;
 	float:left;
 }
 #divDraw {
@@ -63,8 +63,8 @@ text {
 }
 #divText {
 	position: absolute;
-	top:10px;
-	left:1400px;
+	top:50px;
+	left:1200px;
 	background-color:#FFFFFF;
 	height:1200px;
 	width:200px;
@@ -98,8 +98,8 @@ text {
 }
 
 #textareaInput {
-    height:480px;
-    width:330px;
+    height:800px;
+    width:400px;
     resize:none;
 }
 
@@ -112,13 +112,13 @@ text {
 
 #checkboxLabel {
     color:black;
-    font-family: Helvetica; Arial; sans-serif
-    font-size: 12;
+    font-family: Helvetica;
+    font-size: 12px;
 }
 #manualLink {
     color:black;
-    font-family: Helvetica; Arial; sans-serif
-    font-size: 12;
+    font-family: Helvetica;
+    font-size: 12px;
     float:right;
 }
 

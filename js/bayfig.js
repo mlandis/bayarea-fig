@@ -652,7 +652,8 @@ Bayfig.drawTree = function() {
         .attr("x", function(d) { return 5; })
         .attr("y", function(d) { 
             var y = d.y2phy;
-            return y+80;//+5;
+            //return y+80;//+5;
+            return y+5;
             /*if (y > 0) return y;
             else return y + 10;*/
         })
@@ -790,15 +791,12 @@ Bayfig.drawGeo = function() {
     if (meanLon > 180)
         meanLon -= 360;
 
-
     // create polymaps objects
     var po = org.polymaps;
     this.po = po;
     var url = "http://{S}tile.cloudmade.com"
         + "/5b7ebc9342d84da7b27ca499a238df9d"
         + "/41232/256/{Z}/{X}/{Y}.png";
-        //+ "/44979/256/{Z}/{X}/{Y}.png";
-
 
     this.mapSvg = [];
     this.mapPo = [];
@@ -833,7 +831,7 @@ Bayfig.drawGeo = function() {
         if (isLegend)
         {
             go.x = 20;
-            go.y = 20;
+            go.y = 60;
             go.h = 100;
             go.w = 150;
         }
