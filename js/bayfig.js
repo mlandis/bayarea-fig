@@ -831,7 +831,7 @@ Bayfig.drawGeo = function() {
         if (isLegend)
         {
             go.x = 20;
-            go.y = 60;
+            go.y = 80;
             go.h = 100;
             go.w = 150;
         }
@@ -882,8 +882,17 @@ Bayfig.drawGeo = function() {
                             .add(po.image()
                                 .url(po.url(url)
                                 .hosts(["a.","b.","c.",""])));
-        
-
+        if (isLegend)
+        {
+            lgdStr = '<svg width=\"100\" height=\"100\">'
+                lgdStr += '<text class=\"text\"; ';
+                lgdStr += 'x=0 y=0 ';
+                lgdStr += 'dx=65 dy=20 ';
+                lgdStr += 'fill=\"black\" ';
+                lgdStr += 'font-size=\"16\"';
+                lgdStr += '>Legend</text></svg>';
+                $('#container').append(lgdStr);
+        }
     }
     
     // autozoom for one, then update all
@@ -923,7 +932,7 @@ Bayfig.drawMarkers = function() {
     //var asia = [0,1,2,3,4,5]; var sunda = [45, 6,7,8,9,10,11,12,13,14,15,16,17,18,19]; var wallacea = [20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42];
 
     
-    for (var i = 0; i < this.numNodes + 0; i++) {
+    for (var i = 0; i < this.numNodes + 1; i++) {
        
         // for each node
         if (i == this.numNodes)
