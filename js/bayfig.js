@@ -657,7 +657,7 @@ Bayfig.drawTree = function() {
             else return y + 10;*/
         })
         .attr("fill", "black")
-        .attr("font-size","96");
+        .attr("font-size","16");
 
     var scale = d3.scale.linear()
         .domain([0,1])
