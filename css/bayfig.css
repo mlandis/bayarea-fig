@@ -48,8 +48,8 @@ text {
 	left:10px;
     padding: 0px;
 	background-color:#FFFFFF;
-	height:800px;
-	width:600px;
+	height:600px;
+	width:400px;
 	float:left;
 }
 #divDraw {
@@ -98,7 +98,7 @@ text {
 }
 
 #textareaInput {
-    height:800px;
+    height:600px;
     width:400px;
     resize:none;
 }
