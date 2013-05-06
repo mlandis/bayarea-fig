@@ -12,7 +12,7 @@ svg {
 }
 
 text {
-    font-family: Helvetica; Arial; sans-serif;
+    font-family: Helvetica; Arial; sans-serif
     font-size: 48;
 }
 
@@ -55,7 +55,7 @@ text {
 #divDraw {
 	position: absolute;
 	top:10px;
-	left:500px;
+	left:10px;
 	background-color:#FFFFFF;
 	height:10000px;
 	width:15000px;
@@ -72,7 +72,7 @@ text {
 }
 #divText {
 	position: absolute;
-	top:50px;
+	top:10px;
 	left:15400px;
 	background-color:#FFFFFF;
 	height:10100px;
@@ -111,13 +111,13 @@ text {
 }
 
 #checkboxLabel {
-    color:white;
-    font-family: Helvetica; Arial; sans-serif;
+    color:black;
+    font-family: Helvetica; Arial; sans-serif
     font-size: 12;
 }
 #manualLink {
-    color:white;
-    font-family: Helvetica; Arial; sans-serif;
+    color:black;
+    font-family: Helvetica; Arial; sans-serif
     font-size: 12;
     float:right;
 }
