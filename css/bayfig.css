@@ -55,7 +55,7 @@ text {
 #divDraw {
 	position: absolute;
 	top:10px;
-	left:100px;
+	left:200px;
 	background-color:#FFFFFF;
 	height:1200px;
 	width:800px;
@@ -73,7 +73,7 @@ text {
 #divDraw2 {
 	position: absolute;
 	top:10px;
-	left:100px;
+	left:200px;
 	background-color:#FFFFFF;
 	height:10000px;
 	width:15000px;
