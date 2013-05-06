@@ -63,7 +63,7 @@ Bayfig.redrawDivs = function() {
     $( '#textareaInput' ).remove();
     $( '#divCtrlTop' ).remove();
     $( '#divCtrlBottom' ).remove();
-    #( '#divPhylo' ).remove();
+    $( '#divPhylo' ).remove();
     $( '#container' ).append('<div id="divDraw"></div>');
     $( '#container' ).append('<div id="divText"></div>');
 };
