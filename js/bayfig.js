@@ -48,11 +48,23 @@ Bayfig.initialize = function() {
     this.initGeo();
     this.initTree();
 
+    // reformat divs
+    this.redrawDivs();
+
     // draw
     this.drawTree();
     this.drawGeo();
     this.drawMarkers();
 
+};
+
+Bayfig.redrawDivs = function() {
+
+    $( '#textareaInput' ).remove();
+    $( '#divCtrlTop' ).remove();
+    $( '#divCtrlBottom' ).remove();
+    $( '#container' ).append('<div id="divDraw"></div>');
+    $( '#container' ).append('<div id="divText"></div>');
 };
 
 Bayfig.parseInput = function() {
@@ -105,21 +117,6 @@ Bayfig.initTaxa = function() {
         if (lineTokens.length > 1)
             if (lineTokens[0] === 'Dimensions')
                 this.numTaxa  = parseInt(lineTokens[1].split('=')[1].slice(0,-1));
-
-    /*
-        // commented; redundant from tree block
-    
-        // get taxon names
-        if (lineTokens[0] === 'Taxlabels')
-            taxaIdx = 0;
-        else if (taxaIdx >= 0 && taxaIdx < this.numTaxa)
-        {
-            if (lineTokens[0].indexOf(';') !== -1)
-                lineTokens[0] = lineTokens[0].slice(0,-1);
-            this.taxaNames[taxaIdx] = lineTokens[0];
-            taxaIdx++;
-        }
-  */
   }
 };
 
@@ -536,9 +533,6 @@ Bayfig.buildTree = function() {
 
 Bayfig.drawTree = function() {
     
-    $( '#textareaInput' ).remove();
-    $( '#divCtrlTop' ).remove();
-    $( '#divCtrlBottom' ).remove();
 
     var offsetH = 10.0
     
