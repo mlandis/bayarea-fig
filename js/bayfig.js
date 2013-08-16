@@ -49,11 +49,15 @@ Bayfig.initialize = function() {
     this.initTree();
 
     // redraw divs
+    console.log("redrawDivs()\n");
     this.redrawDivs();
 
     // draw
+    console.log("drawTree()\n");
     this.drawTree();
+    console.log("drawGeo()\n");
     this.drawGeo();
+    console.log("drawMarkers()\n");
     this.drawMarkers();
 
 };
@@ -234,7 +238,10 @@ Bayfig.initTree = function() {
         else if (nodeIdx >= 0 && nodeIdx < this.numTaxa)
         {
             if (lineTokens[1].indexOf(';') !== -1 || lineTokens[1].indexOf(',') !== -1)
+            {
+                console.log(i,lineTokens);
                 lineTokens[1] = lineTokens[1].slice(0,-1);
+            }
             var idx = parseInt(lineTokens[0]);
             /*
             this.nodes[nodeIdx] = new Bayfig.Node();
@@ -666,7 +673,7 @@ Bayfig.drawTree = function() {
 
     var scaleDist = d3.scale.linear()
         .domain([0,150000000000000])//this.sumDistances])
-        .range(["blue","red"]);
+        .range(["black","black"]);
 
     var wallace = [0,1,2,3,4,5,6,7,8,9]; //]; var lydekker = [7,8,9];
     this.treeDrawLines = this.treeSvg.selectAll("rect.phylo")
@@ -800,6 +807,8 @@ Bayfig.drawGeo = function() {
 
     this.mapSvg = [];
     this.mapPo = [];
+    var hh = 250;
+    var ww = 500;
     // map per node + one for legend
     for (var i = 0; i < this.numNodes + 1; i++) {
         
@@ -825,15 +834,15 @@ Bayfig.drawGeo = function() {
         var go = { 
             'x': fo.x2phy,
             'y': fo.y1phy,
-            'h': 100,
-            'w': 150
+            'h': hh,
+            'w': ww
         };
         if (isLegend)
         {
             go.x = 20;
             go.y = 80;
-            go.h = 100;
-            go.w = 150;
+            go.h = hh;
+            go.w = ww;
         }
     
         var divStr = '';
@@ -895,25 +904,27 @@ Bayfig.drawGeo = function() {
         }
     }
     
+    console.log("autozoom start\n");
     // autozoom for one, then update all
     var autoZoomSize = 0.25;
     while (minLat < this.mapPo[0].extent()[0].lat) {
-        this.mapPo[0].zoomBy(autoZoomSize);
-        if (this.mapPo[0].zoom() <= 2) { this.mapPo[0].center({lat:20,lon:20}); }
+        this.mapPo[0].zoomBy(-autoZoomSize);
+        if (this.mapPo[0].zoom() <= 2) { this.mapPo[0].center({lat:20,lon:20}); break; }
     }
     while (minLon < this.mapPo[0].extent()[0].lon) {
-        this.mapPo[0].zoomBy(autoZoomSize);
-        if (this.mapPo[0].zoom() <= 2) { this.mapPo[0].center({lat:20,lon:20}); }
+        this.mapPo[0].zoomBy(-autoZoomSize);
+        if (this.mapPo[0].zoom() <= 2) { this.mapPo[0].center({lat:20,lon:20}); break; }
     }
     while (maxLat > this.mapPo[0].extent()[1].lat) {
-        this.mapPo[0].zoomBy(autoZoomSize);
-        if (this.mapPo[0].zoom() <= 2) { this.mapPo[0].center({lat:20,lon:20}); }
+        this.mapPo[0].zoomBy(-autoZoomSize);
+        if (this.mapPo[0].zoom() <= 2) { this.mapPo[0].center({lat:20,lon:20}); break; }
     }
     while (maxLon > this.mapPo[0].extent()[1].lon) {
-        this.mapPo[0].zoomBy(autoZoomSize);
-        if (this.mapPo[0].zoom() <= 2) { this.mapPo[0].center({lat:20,lon:20}); }
+        this.mapPo[0].zoomBy(-autoZoomSize);
+        if (this.mapPo[0].zoom() <= 2) { this.mapPo[0].center({lat:20,lon:20}); break; }
     }
-    this.mapPo[0].zoomBy(-autoZoomSize);
+    console.log("autozoom end\n");
+    //this.mapPo[0].zoomBy(-autoZoomSize);
     var bestZoom = this.mapPo[0].zoom();
     for (var i = 0; i < this.mapPo.length; i++) {
         if (typeof(this.mapPo[i]) !== 'undefined')
@@ -926,7 +937,7 @@ Bayfig.drawGeo = function() {
 Bayfig.drawMarkers = function() {
     
     var foci = [];
-    var cutoff = 0.0; // .07/.76 + 0.08362;
+    var cutoff = 0.12; // .07/.76 + 0.08362;
     //var wallace = [0,1,2,3,4,5,6]; var lydekker = [7,8,9];
     var wallace = [0,1,2,3,4,5,6,7,8,9];
     //var asia = [0,1,2,3,4,5]; var sunda = [45, 6,7,8,9,10,11,12,13,14,15,16,17,18,19]; var wallacea = [20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42];
@@ -962,9 +973,9 @@ Bayfig.drawMarkers = function() {
                         return 0.0;
                 })
                 .attr("fill", function(d,i) {
-                    if (wallace.indexOf(i) !== -1) return "red";
+                    if (wallace.indexOf(i) !== -1) return "black";
                     //else if (lydekker.indexOf(i) !== -1) return "purple";
-                    else return "blue";
+                    else return "black";
                     
                     /*
                     if (asia.indexOf(i) !== -1) return "green";
