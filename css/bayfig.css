@@ -70,22 +70,13 @@ text {
 	width:200px;
 	float:left;
 }
-#divDraw2 {
+#divLegend {
 	position: absolute;
 	top:50px;
-	left:200px;
+	left:1200px;
 	background-color:#FFFFFF;
-	height:10000px;
-	width:15000px;
-	float:left;
-}
-#divText2 {
-	position: absolute;
-	top:50px;
-	left:15400px;
-	background-color:#FFFFFF;
-	height:10100px;
-	width:900px;
+	height:1200px;
+	width:200px;
 	float:left;
 }
 

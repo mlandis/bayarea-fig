@@ -46,6 +46,7 @@ Bayfig.initialize = function() {
     // init data
     this.initTaxa();
     this.initGeo();
+    this.initSettings();
     this.initTree();
 
     // redraw divs
@@ -70,6 +71,16 @@ Bayfig.redrawDivs = function() {
     $( '#divPhylo' ).remove();
     $( '#container' ).append('<div id="divDraw"></div>');
     $( '#container' ).append('<div id="divText"></div>');
+
+    this.divDrawMargin = 20;
+    $( '#divDraw' ).height(this.canvasheight);
+    $( '#divDraw' ).width(this.canvaswidth);
+    $( '#divDraw' ).css({left:this.mapwidth,top:this.mapheight,margin:this.divDrawMargin});
+    $( '#divText' ).height(this.canvasheight);
+    $( '#divText' ).width(250);
+    this.divDrawOffset = $('#divDraw').offset();
+    $( '#divText' ).css({left:this.canvaswidth+this.mapwidth+this.divDrawOffset.left+10,top:this.mapheight+this.divDrawMargin});
+
 };
 
 Bayfig.parseInput = function() {
@@ -86,16 +97,21 @@ Bayfig.parseInput = function() {
     this.taxaStr = '';
     this.treeStr = '';
     this.geoStr = '';
+    this.settingsStr = '';
     var parseSelect = '';
 
     for (var i = 0; i < inputTokens.length; i++)
     {
-        if (inputTokens[i] === 'Begin taxa;')
+        if (inputTokens[i] === 'Begin bayarea-fig;')
+            parseSelect = 'bayarea-fig';
+        else if (inputTokens[i] === 'Begin taxa;')
             parseSelect = 'taxa';
         else if (inputTokens[i] === 'Begin geo;')
             parseSelect = 'geo';
         else if (inputTokens[i] === 'Begin trees;')
             parseSelect = 'tree';
+        else if (parseSelect === 'bayarea-fig')
+            this.settingsStr += inputTokens[i] + '\n';
         else if (parseSelect === 'taxa')
             this.taxaStr += inputTokens[i] + '\n';
         else if (parseSelect === 'geo')
@@ -106,6 +122,54 @@ Bayfig.parseInput = function() {
             ; // do nothing
     }
 };
+
+Bayfig.initSettings = function() {
+
+    this.mapheight=100;
+    this.mapwidth=150;
+    this.canvasheight=2000;
+    this.canvaswidth=1000;
+    this.minareaval=0.1;
+    this.areacolors=["black"];
+    this.areatypes=[];
+    for (var i = 0; i < this.numGeo; i++)
+        this.areatypes[i] = 0
+
+    this.settingsTokens = this.settingsStr.split('\n');
+    for (var i = 0; i < this.settingsTokens.length; i++)
+    {
+        var lineTokens = trim1(this.settingsTokens[i]).split(/\s+/g);
+        if (lineTokens.length > 1)
+        {
+            if (lineTokens[0] == "mapheight")
+                this.mapheight = parseInt(lineTokens[1]);
+            else if (lineTokens[0] == "mapwidth")
+                this.mapwidth = parseInt(lineTokens[1]);
+            else if (lineTokens[0] == "canvasheight")
+                this.canvasheight = parseInt(lineTokens[1]);
+            else if (lineTokens[0] == "canvaswidth")
+                this.canvaswidth = parseInt(lineTokens[1]);
+            else if (lineTokens[0] == "minareaval")
+                this.minareaval = parseFloat(lineTokens[1]);
+            else if (lineTokens[0] == "areacolors")
+            {
+                colors = []
+                for (var j = 1; j < lineTokens.length; j++)
+                    colors.push(lineTokens[j]);
+                this.areacolors = colors; 
+            }
+            else if (lineTokens[0] == "areatypes")
+            {
+                types = []
+                for (var j = 1; j < lineTokens.length; j++)
+                    types.push(parseInt(lineTokens[j]));
+                this.areatypes = types;
+            }
+        }
+
+    }
+};
+
 
 Bayfig.initTaxa = function() {
 
@@ -239,7 +303,7 @@ Bayfig.initTree = function() {
         {
             if (lineTokens[1].indexOf(';') !== -1 || lineTokens[1].indexOf(',') !== -1)
             {
-                console.log(i,lineTokens);
+                //console.log(i,lineTokens);
                 lineTokens[1] = lineTokens[1].slice(0,-1);
             }
             var idx = parseInt(lineTokens[0]);
@@ -248,7 +312,7 @@ Bayfig.initTree = function() {
             this.nodes[nodeIdx].id = idx;
             this.nodes[nodeIdx].name = lineTokens[1];
             */
-            this.taxaNames[idx] = lineTokens[1].replace("_",". ");
+            this.taxaNames[idx] = lineTokens[1].replace("_"," ");
             nodeIdx++;
         }
 
@@ -792,7 +856,7 @@ Bayfig.drawGeo = function() {
     meanLon = (maxLon + minLon) / 2 + 5;
 
 
-    console.log(minLat,minLon,maxLat,maxLon,meanLat,meanLon);
+    //console.log(minLat,minLon,maxLat,maxLon,meanLat,meanLon);
 
     // restore to -180,180
     if (meanLon > 180)
@@ -803,12 +867,10 @@ Bayfig.drawGeo = function() {
     this.po = po;
     var url = "http://{S}tile.cloudmade.com"
         + "/5b7ebc9342d84da7b27ca499a238df9d"
-        + "/41232/256/{Z}/{X}/{Y}.png";
+        + "/41232@2x/256/{Z}/{X}/{Y}.png";
 
     this.mapSvg = [];
     this.mapPo = [];
-    var hh = 250;
-    var ww = 500;
     // map per node + one for legend
     for (var i = 0; i < this.numNodes + 1; i++) {
         
@@ -834,15 +896,15 @@ Bayfig.drawGeo = function() {
         var go = { 
             'x': fo.x2phy,
             'y': fo.y1phy,
-            'h': hh,
-            'w': ww
+            'h': this.mapheight,
+            'w': this.mapwidth
         };
         if (isLegend)
         {
-            go.x = 20;
-            go.y = 80;
-            go.h = hh;
-            go.w = ww;
+            go.x = 0;//this.mapwidth;
+            go.y = 20;//this.mapheight
+            go.h = this.mapheight;
+            go.w = this.mapwidth;
         }
     
         var divStr = '';
@@ -864,7 +926,7 @@ Bayfig.drawGeo = function() {
         // create div for each node in divDraw
         else {
 
-        divStr += '<div id=\"divMap' + i + '\" style=\"';
+            divStr += '<div id=\"divMap' + i + '\" style=\"';
             divStr += 'position: absolute; ';
             divStr += 'border: 1px solid black; ';
             divStr += 'top: ' + (go.y - go.h - 5) + 'px; ';
@@ -896,7 +958,7 @@ Bayfig.drawGeo = function() {
             lgdStr = '<svg width=\"100\" height=\"100\">'
                 lgdStr += '<text class=\"text\"; ';
                 lgdStr += 'x=0 y=0 ';
-                lgdStr += 'dx=65 dy=20 ';
+                lgdStr += 'dx=10 dy=20 ';
                 lgdStr += 'fill=\"black\" ';
                 lgdStr += 'font-size=\"16\"';
                 lgdStr += '>Legend</text></svg>';
@@ -909,19 +971,19 @@ Bayfig.drawGeo = function() {
     var autoZoomSize = 0.25;
     while (minLat < this.mapPo[0].extent()[0].lat) {
         this.mapPo[0].zoomBy(-autoZoomSize);
-        if (this.mapPo[0].zoom() <= 2) { this.mapPo[0].center({lat:20,lon:20}); break; }
+        if (this.mapPo[0].zoom() <= 1) { this.mapPo[0].center({lat:20,lon:20}); break; }
     }
     while (minLon < this.mapPo[0].extent()[0].lon) {
         this.mapPo[0].zoomBy(-autoZoomSize);
-        if (this.mapPo[0].zoom() <= 2) { this.mapPo[0].center({lat:20,lon:20}); break; }
+        if (this.mapPo[0].zoom() <= 1) { this.mapPo[0].center({lat:20,lon:20}); break; }
     }
     while (maxLat > this.mapPo[0].extent()[1].lat) {
         this.mapPo[0].zoomBy(-autoZoomSize);
-        if (this.mapPo[0].zoom() <= 2) { this.mapPo[0].center({lat:20,lon:20}); break; }
+        if (this.mapPo[0].zoom() <= 1) { this.mapPo[0].center({lat:20,lon:20}); break; }
     }
     while (maxLon > this.mapPo[0].extent()[1].lon) {
         this.mapPo[0].zoomBy(-autoZoomSize);
-        if (this.mapPo[0].zoom() <= 2) { this.mapPo[0].center({lat:20,lon:20}); break; }
+        if (this.mapPo[0].zoom() <= 1) { this.mapPo[0].center({lat:20,lon:20}); break; }
     }
     console.log("autozoom end\n");
     //this.mapPo[0].zoomBy(-autoZoomSize);
@@ -937,9 +999,9 @@ Bayfig.drawGeo = function() {
 Bayfig.drawMarkers = function() {
     
     var foci = [];
-    var cutoff = 0.12; // .07/.76 + 0.08362;
+    var cutoff = this.minareaval; // .07/.76 + 0.08362;
     //var wallace = [0,1,2,3,4,5,6]; var lydekker = [7,8,9];
-    var wallace = [0,1,2,3,4,5,6,7,8,9];
+    //var wallace = [0,1,2,3,4,5,6,7,8,9];
     //var asia = [0,1,2,3,4,5]; var sunda = [45, 6,7,8,9,10,11,12,13,14,15,16,17,18,19]; var wallacea = [20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42];
 
     
@@ -966,23 +1028,12 @@ Bayfig.drawMarkers = function() {
                 .attr("cy", function(d,i) { return foci[i].y; })
                 .attr("r", function(d,i) {
                     if (d > cutoff)
-                        //return 10*Math.pow(1 - 0.75*d,0.5);
-                        //return 10*Math.pow(d,0.5);
-                        return 5;
+                        return Bayfig.mapheight*0.05;
                     else
                         return 0.0;
                 })
                 .attr("fill", function(d,i) {
-                    if (wallace.indexOf(i) !== -1) return "black";
-                    //else if (lydekker.indexOf(i) !== -1) return "purple";
-                    else return "black";
-                    
-                    /*
-                    if (asia.indexOf(i) !== -1) return "green";
-                    else if (sunda.indexOf(i) !== -1) return "blue";
-                    else if (wallacea.indexOf(i) !== -1) return "red";
-                    else return "magenta";
-                    */
+                    return Bayfig.areacolors[Bayfig.areatypes[i]];
                 })
                 .attr("stroke", "black")
                 .attr("fill-opacity", function(d) { return d; });
