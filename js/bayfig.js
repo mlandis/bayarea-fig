@@ -986,7 +986,7 @@ Bayfig.drawGeo = function() {
         if (this.mapPo[0].zoom() <= 1) { this.mapPo[0].center({lat:20,lon:20}); break; }
     }
     console.log("autozoom end\n");
-    //this.mapPo[0].zoomBy(-autoZoomSize);
+    this.mapPo[0].zoomBy(-autoZoomSize);
     var bestZoom = this.mapPo[0].zoom();
     for (var i = 0; i < this.mapPo.length; i++) {
         if (typeof(this.mapPo[i]) !== 'undefined')

@@ -1,5 +1,15 @@
 #NEXUS
 
+Begin bayarea-fig;
+	mapheight 100
+	mapwidth 150
+	canvasheight 2000
+	canvaswidth 1000
+	minareaval 0.15
+	areacolors blue red
+	areatypes 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0
+End;
+
 Begin taxa;
 	Dimensions ntax=65;
 	Taxlabels
