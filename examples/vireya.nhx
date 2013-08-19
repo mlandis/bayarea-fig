@@ -6,8 +6,8 @@ Begin bayarea-fig;
 	canvasheight 2000
 	canvaswidth 1000
 	minareaval 0.15
-	areacolors blue red
-	areatypes 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0
+	areacolors blue red orchid
+	areatypes 1 1 1 1 1 1 1 2 2 2 0 0 0 0 0 0 0 0 0 0
 End;
 
 Begin taxa;
