@@ -60,6 +60,8 @@ Bayfig.initialize = function() {
     this.drawGeo();
     console.log("drawMarkers()\n");
     this.drawMarkers();
+    console.log("drawLegend()\n");
+    this.drawLegend();
 
 };
 
@@ -80,7 +82,6 @@ Bayfig.redrawDivs = function() {
     $( '#divText' ).width(250);
     this.divDrawOffset = $('#divDraw').offset();
     $( '#divText' ).css({left:this.canvaswidth+this.mapwidth+this.divDrawOffset.left+10,top:this.mapheight+this.divDrawMargin});
-
 };
 
 Bayfig.parseInput = function() {
@@ -102,7 +103,9 @@ Bayfig.parseInput = function() {
 
     for (var i = 0; i < inputTokens.length; i++)
     {
-        if (inputTokens[i] === 'Begin bayarea-fig;')
+        if (inputTokens[i] === 'End;')
+            parseSelect = '';
+        else if (inputTokens[i] === 'Begin bayarea-fig;')
             parseSelect = 'bayarea-fig';
         else if (inputTokens[i] === 'Begin taxa;')
             parseSelect = 'taxa';
@@ -132,6 +135,7 @@ Bayfig.initSettings = function() {
     this.minareaval=0.1;
     this.areacolors=["black"];
     this.areatypes=[];
+    this.areanames=["All"];
     for (var i = 0; i < this.numGeo; i++)
         this.areatypes[i] = 0
 
@@ -141,29 +145,37 @@ Bayfig.initSettings = function() {
         var lineTokens = trim1(this.settingsTokens[i]).split(/\s+/g);
         if (lineTokens.length > 1)
         {
-            if (lineTokens[0] == "mapheight")
+            if (lineTokens[0] === "mapheight")
                 this.mapheight = parseInt(lineTokens[1]);
-            else if (lineTokens[0] == "mapwidth")
+            else if (lineTokens[0] === "mapwidth")
                 this.mapwidth = parseInt(lineTokens[1]);
-            else if (lineTokens[0] == "canvasheight")
+            else if (lineTokens[0] === "canvasheight")
                 this.canvasheight = parseInt(lineTokens[1]);
-            else if (lineTokens[0] == "canvaswidth")
+            else if (lineTokens[0] === "canvaswidth")
                 this.canvaswidth = parseInt(lineTokens[1]);
-            else if (lineTokens[0] == "minareaval")
+            else if (lineTokens[0] === "minareaval")
                 this.minareaval = parseFloat(lineTokens[1]);
-            else if (lineTokens[0] == "areacolors")
+            else if (lineTokens[0] === "areacolors")
             {
                 colors = []
                 for (var j = 1; j < lineTokens.length; j++)
                     colors.push(lineTokens[j]);
                 this.areacolors = colors; 
             }
-            else if (lineTokens[0] == "areatypes")
+            else if (lineTokens[0] === "areatypes")
             {
                 types = []
                 for (var j = 1; j < lineTokens.length; j++)
                     types.push(parseInt(lineTokens[j]));
                 this.areatypes = types;
+            }
+            else if (lineTokens[0] === "areanames")
+            {
+                names = []
+                for (var j = 1; j < lineTokens.length; j++)
+                    names.push(lineTokens[j]);
+                this.areanames = names;
+
             }
         }
 
@@ -901,8 +913,8 @@ Bayfig.drawGeo = function() {
         };
         if (isLegend)
         {
-            go.x = 0;//this.mapwidth;
-            go.y = 20;//this.mapheight
+            go.x = this.mapwidth +5; // 0;
+            go.y = this.mapheight - 50; // 20;
             go.h = this.mapheight;
             go.w = this.mapwidth;
         }
@@ -957,8 +969,8 @@ Bayfig.drawGeo = function() {
         {
             lgdStr = '<svg width=\"100\" height=\"100\">'
                 lgdStr += '<text class=\"text\"; ';
-                lgdStr += 'x=0 y=0 ';
-                lgdStr += 'dx=10 dy=20 ';
+                lgdStr += 'x=' + go.x + ' y=' + go.y + ' '; //x=0 y=0 ';
+                lgdStr += 'dx=15 dy=10 ';
                 lgdStr += 'fill=\"black\" ';
                 lgdStr += 'font-size=\"16\"';
                 lgdStr += '>Legend</text></svg>';
@@ -1044,9 +1056,102 @@ Bayfig.drawMarkers = function() {
 
 };
 
+
 Bayfig.drawLegend = function() {
 
+    var barheight = 30;
+    var barwidth = 30;
+    var barspace = 25;
 
+/*
+    var divStr = ''
+    divStr += '<div id=\"divLegend' + i + '\" style=\"';
+    divStr += 'position: absolute; ';
+    divStr += 'border: 1px solid black; ';
+    divStr += 'top: -15px; ';
+    divStr += 'left: -10px; ';
+    divStr += 'height: ' + ( 30+ (barheight+barspace)*this.areanames.length ) + 'px; ';
+    divStr += 'width: ' + ( 20+ this.mapwidth ) + 'px;';
+    divStr += '\"></div>';
+    $('#divDraw').append(divStr);
+*/
+
+    for (var i = 0; i < this.areacolors.length; i++)
+    {
+        ypos = (barheight+barspace)*i + this.mapheight;
+        var svg = d3.select("#container").select("svg")
+
+        var gradient = svg.append("svg:defs")
+          .append("svg:linearGradient")
+            .attr("id","gradient")
+            .attr("x1","0")
+            .attr("y1","0")
+            .attr("x2","1")
+            .attr("y2","0")
+            .attr("spreadMethod","pad");
+
+        gradient.append("svg:stop")
+            .attr("offset","0%")
+            .attr("stop-color",this.areacolors[i])
+            .attr("stop-opacity",1);
+        
+        gradient.append("svg:stop")
+            .attr("offset","100%")
+            .attr("stop-color","white")
+            .attr("stop-opacity",1);
+
+        svg.append("svg:rect")
+            .attr("width", this.mapwidth) //barwidth)
+            .attr("height", barheight)
+            .attr("x", 0)
+            .attr("y", ypos)
+            .style("fill","url(#gradient)")
+            .attr("stroke","black")
+
+        svg.append("svg:text")
+            .attr("class","text")
+            .attr("x", 0)
+            .attr("y", ypos-5)
+            .text(this.areanames[i])
+            .attr("fill", "black")
+            .attr("font-size","16");
+
+        var th = (1-this.minareaval)*this.mapwidth;
+        svg.append("svg:line")
+            .attr("x1", th)
+            .attr("x2", th)
+            .attr("y1",ypos)
+            .attr("y2",ypos+barheight)
+            .style("stroke","black");
+
+    }
+   
+    svg.append("svg:text")
+        .attr("class","text")
+        .attr("x", (1-this.minareaval)*this.mapwidth)
+        .attr("y", (barheight+barspace)*this.areanames.length + 90)
+        .attr("fill", "black")
+        .attr("font-size","16")
+        .attr("text-anchor","middle")
+        .text(this.minareaval);
+   /*
+    svg.append("svg:text")
+        .attr("class","text")
+        .attr("x", 0)
+        .attr("y", (barheight+barspace)*this.areanames.length + 90)
+        .text("1.0")
+        .attr("fill", "black")
+        .attr("font-size","16");
+   
+   
+    svg.append("svg:text")
+        .attr("class","text")
+        .attr("x", this.mapwidth)
+        .attr("y", (barheight+barspace)*this.areanames.length + 90)
+        .text("0.0")
+        .attr("fill", "black")
+        .attr("font-size","16");
+    */
 }
 
 

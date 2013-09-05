@@ -8,6 +8,7 @@ Begin bayarea-fig;
 	minareaval 0.15
 	areacolors blue red orchid
 	areatypes 1 1 1 1 1 1 1 2 2 2 0 0 0 0 0 0 0 0 0 0
+	areanames Sunda Sahul Wallacea
 End;
 
 Begin taxa;
