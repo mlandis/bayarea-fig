@@ -1,3 +1,7 @@
+## bayarea-fig
+
+```bayarea-fig``` plots ancestral ranges for all nodes on a phylogenetic tree. The current version of the program is not particularly clever, so maps are not position to minimize overlap. Users can account for this problem in two ways: 1) click on a map to make it disappear; and 2) modify the settings block to your liking.
+
 ### bayarea-fig settings block
 ```
 Begin bayarea-fig;
@@ -13,7 +17,7 @@ End;
 
 ```
 
-```mapheight``` and ```mapwidth``` provide the dimensions of maps drawn at each node. Minimum global map size is 700 by 350 (per Cloudmade).
+```mapheight``` and ```mapwidth``` provide the dimensions of maps drawn at each node. Minimum global map size is 700 by 350 (a result of using Cloudmade, the maptile server).
 
 ```canvasheight``` and ```canvaswidth``` provide the dimensions for the figure. Larger figures mean less of the tree is hidden by maps.
 
