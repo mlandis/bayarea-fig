@@ -1,6 +1,8 @@
 ## bayarea-fig
 
-```bayarea-fig``` plots ancestral ranges for all nodes on a phylogenetic tree. The current version of the program is not particularly clever, so maps are not position to minimize overlap. Users can account for this problem in two ways: 1) click on a map to make it disappear; and 2) modify the settings block to your liking.
+```bayarea-fig``` plots ancestral ranges for all nodes on a phylogenetic tree. The current version of the program is not particularly clever, so maps are not position to minimize overlap. Users can correct for this effect in two ways: 1) click on a map to make it disappear; and 2) modify the settings block to your liking.
+
+To use ```bayarea-fig```, visit http://mlandis.github.com/bayarea-fig.
 
 ### bayarea-fig settings block
 ```
