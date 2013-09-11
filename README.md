@@ -5,6 +5,7 @@
 To use ```bayarea-fig```, visit http://mlandis.github.com/bayarea-fig.
 
 ### bayarea-fig settings block
+Here's an example for an analysis with 5 areas of 3 types.
 ```
 Begin bayarea-fig;
     mapheight 100
@@ -16,7 +17,6 @@ Begin bayarea-fig;
     areatypes 1 3 2 2 1
     areanames Earth Mars Venus
 End;
-
 ```
 
 ```mapheight``` and ```mapwidth``` provide the dimensions of maps drawn at each node. Minimum global map size is 700 by 350 (a result of using Cloudmade, the maptile server).
