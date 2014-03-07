@@ -305,7 +305,9 @@ Bayfig.initTree = function() {
     
     for (var i = 0; i < this.treeTokens.length; i++)
     {
+        //console.log(i,this.treeTokens[i]);
         var lineTokens = trim1(this.treeTokens[i]).split(/\s+/g).filter(function() { return true} );
+        console.log(i, lineTokens);
 
         // get taxon names
         if (lineTokens[0] === 'Translate')
@@ -330,12 +332,18 @@ Bayfig.initTree = function() {
 
         else if (lineTokens[0] === 'tree')
         {
+            console.log("hi")
             if (lineTokens[2] === '=')
+            {
+                console.log("A")
                 this.nhxStr = lineTokens[3];
+            }
             else {
+                console.log("B")
                 var lt = lineTokens[1];
                 this.nhxStr = lt.slice(lt.indexOf('='),lt.length);
             }
+            console.log(this.nhxStr);
         }
 
     }
@@ -1080,6 +1088,7 @@ Bayfig.drawLegend = function() {
     {
         ypos = (barheight+barspace)*i + this.mapheight;
         var svg = d3.select("#container").select("svg")
+        var tmpcol = this.areacolors[i]
 
         var gradient = svg.append("svg:defs")
           .append("svg:linearGradient")
@@ -1092,7 +1101,7 @@ Bayfig.drawLegend = function() {
 
         gradient.append("svg:stop")
             .attr("offset","0%")
-            .attr("stop-color",this.areacolors[i])
+            .attr("stop-color",tmpcol)
             .attr("stop-opacity",1);
         
         gradient.append("svg:stop")
