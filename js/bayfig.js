@@ -1089,10 +1089,11 @@ Bayfig.drawLegend = function() {
         ypos = (barheight+barspace)*i + this.mapheight;
         var svg = d3.select("#container").select("svg")
         var tmpcol = this.areacolors[i]
+        console.log(tmpcol);
 
         var gradient = svg.append("svg:defs")
           .append("svg:linearGradient")
-            .attr("id","gradient")
+            .attr("id","gradient"+tmpcol)
             .attr("x1","0")
             .attr("y1","0")
             .attr("x2","1")
@@ -1114,7 +1115,7 @@ Bayfig.drawLegend = function() {
             .attr("height", barheight)
             .attr("x", 0)
             .attr("y", ypos)
-            .style("fill","url(#gradient)")
+            .style("fill","url(#gradient"+tmpcol+")")
             .attr("stroke","black")
 
         svg.append("svg:text")
