@@ -81,7 +81,9 @@ Bayfig.redrawDivs = function() {
     $( '#divText' ).height(this.canvasheight);
     $( '#divText' ).width(250);
     this.divDrawOffset = $('#divDraw').offset();
-    $( '#divText' ).css({left:this.canvaswidth+this.mapwidth+this.divDrawOffset.left+10,top:this.mapheight+this.divDrawMargin});
+    console.log(this.canvaswidth,this.mapwidth,this.divDrawOffset.left);
+    //$( '#divText' ).css({left:this.canvaswidth+this.mapwidth+this.divDrawOffset.left+10,top:this.mapheight+this.divDrawMargin});
+    $( '#divText' ).css({left:this.canvaswidth+this.divDrawOffset.left+30,top:this.mapheight+this.divDrawMargin});
 };
 
 Bayfig.parseInput = function() {
