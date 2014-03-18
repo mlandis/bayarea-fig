@@ -921,9 +921,12 @@ Bayfig.drawGeo = function() {
     // create polymaps objects
     var po = org.polymaps;
     this.po = po;
+    /*
     var url = "http://{S}tile.cloudmade.com"
         + "/5b7ebc9342d84da7b27ca499a238df9d"
         + "/41232@2x/256/{Z}/{X}/{Y}.png";
+    */
+    var url = "http://{S}tiles.mapbox.com" + "/v3/mlandis.hi89igdk" + "/{Z}/{X}/{Y}.png";
 
     this.mapSvg = [];
     this.mapPo = [];
@@ -1008,7 +1011,7 @@ Bayfig.drawGeo = function() {
                             .zoom(1.5)
                             .add(po.image()
                                 .url(po.url(url)
-                                .hosts(["a.","b.","c.",""])));
+                                .hosts(["a.","b.","c.","d."])));
         if (isLegend)
         {
             lgdStr = '<svg width=\"100\" height=\"100\">'
