@@ -884,10 +884,10 @@ Bayfig.drawGeo = function() {
 
     var meanLat = 0,
         meanLon = 0,
-        minLat = 90,
-        maxLat = -90,
-        minLon = 180,
-        maxLon = -180;
+        minLat = Infinity,
+        maxLat = -Infinity,
+        minLon = Infinity,
+        maxLon = -Infinity;
 
     // find center and extent of coords
     for (var i = 0; i < this.geoData.length; i++) {
@@ -902,7 +902,7 @@ Bayfig.drawGeo = function() {
         if (lon > maxLon) { maxLon = lon; }
 
         // shift to 0,360
-        if (lon < 0) { lon = 360 + lon; }
+        //if (lon < 0) { lon = 360 + lon; }
         meanLon += lon;
     }
 
@@ -915,8 +915,8 @@ Bayfig.drawGeo = function() {
     //console.log(minLat,minLon,maxLat,maxLon,meanLat,meanLon);
 
     // restore to -180,180
-    if (meanLon > 180)
-        meanLon -= 360;
+    //if (meanLon > 180)
+    //    meanLon -= 360;
 
     // create polymaps objects
     var po = org.polymaps;
