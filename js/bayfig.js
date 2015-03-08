@@ -571,12 +571,19 @@ Bayfig.buildTree = function() {
                     // find variable value assignments
                     var varTokens = nhxTokens[j].split('=');
 
-                    if (varTokens[0] === 'area_pp') {
+                    if (varTokens[0] === 'area_pp' || varTokens[0] === 'ch') {
                         valTokens = varTokens[1].slice(1,-1).split(',');
                         valVec = [];
                         for (var k = 0; k < valTokens.length; k++)
                             valVec[k] = parseFloat(valTokens[k])
                         p.area_pp = valVec;
+                    }
+                    else if (varTokens[0] === 'pa') {
+                        valTokens = varTokens[1].slice(1,-1).split(',');
+                        valVec = [];
+                        for (var k = 0; k < valTokens.length; k++)
+                            valVec[k] = parseFloat(valTokens[k])
+                        p.pa_area_pp = valVec;
                     }
                     else {
                         ; // e.g. other variables
