@@ -166,12 +166,14 @@ Bayfig.initSettings = function() {
 
     this.mapheight=100;
     this.mapwidth=150;
+    this.markerradius=1.0;
     this.canvasheight=2000;
     this.canvaswidth=1000;
     this.minareaval=0.1;
     this.areacolors=["black"];
     this.areatypes=[];
     this.areanames=["All"];
+    this.showlegend=1;
     for (var i = 0; i < this.numGeo; i++)
         this.areatypes[i] = 0
 
@@ -185,6 +187,8 @@ Bayfig.initSettings = function() {
                 this.mapheight = parseInt(lineTokens[1]);
             else if (lineTokens[0] === "mapwidth")
                 this.mapwidth = parseInt(lineTokens[1]);
+            else if (lineTokens[0] === "markerradius")
+                this.markerradius = parseFloat(lineTokens[1]);
             else if (lineTokens[0] === "canvasheight")
                 this.canvasheight = parseInt(lineTokens[1]);
             else if (lineTokens[0] === "canvaswidth")
@@ -212,6 +216,10 @@ Bayfig.initSettings = function() {
                     names.push(lineTokens[j]);
                 this.areanames = names;
 
+            }
+            else if (lineTokens[0] === "showlegend")
+            {
+                this.showlegend = parseInt(lineTokens[1])
             }
         }
 
@@ -944,6 +952,11 @@ Bayfig.drawGeo = function() {
         if (i == this.numNodes)
             isLegend = true
 
+        if (this.showlegend===0 && isLegend === true)
+        {
+            continue;
+        }
+
         // legend
         if (isLegend)
             var p = this.nodes[0];
@@ -1094,7 +1107,7 @@ Bayfig.drawMarkers = function() {
                 .attr("cy", function(d,i) { return foci[i].y; })
                 .attr("r", function(d,i) {
                     if (d > cutoff)
-                        return Bayfig.mapheight*0.05;
+                        return Bayfig.mapheight*Bayfig.markerradius*0.05;
                     else
                         return 0.0;
                 })
@@ -1112,6 +1125,13 @@ Bayfig.drawMarkers = function() {
 
 
 Bayfig.drawLegend = function() {
+
+    
+    if (this.showlegend===0)
+    {
+        console.log("do not draw legend\n");
+        return;
+    }
 
     var barheight = 30;
     var barwidth = 30;
